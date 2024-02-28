@@ -1,0 +1,76 @@
+﻿@page
+@model ContactoModel
+@{
+    ViewData["Title"] = "Contacto";
+
+}
+
+<form id="contactForm" method="post">
+    <div>
+        <label for="nombre">Nombre:</label>
+        <input class="form-control" type="text" id="nombre" name="nombre" required />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input class="form-control"  type="email" id="email" name="email" required />
+    </div>
+    <div>
+        <label for="mensaje">Mensaje:</label>
+        <textarea class="form-control"  id="mensaje" name="mensaje" required></textarea>
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">Enviar</button>
+</form>
+
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('#contactForm').validate({
+                rules: {
+                    nombre: "required",
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    mensaje: "required"
+                },
+                messages: {
+                    nombre: "Por favor ingrese su nombre",
+                    email: {
+                        required: "Por favor ingrese su correo electrónico",
+                        email: "Por favor ingrese un correo electrónico válido"
+                    },
+                    mensaje: "Por favor ingrese su mensaje"
+                },
+                errorClass: "is-invalid",
+                validClass: "is-valid",
+                errorElement: "div",
+                errorPlacement: function (error, element) {
+                    error.addClass("invalid-feedback");
+                    error.insertAfter(element);
+                },
+                success: function (label, element) {
+                    $(element).addClass("is-valid");
+                    $(element).next('.invalid-feedback').remove();
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass(errorClass).removeClass(validClass);
+                    $(element).next('.invalid-feedback').remove();
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).addClass(validClass).removeClass(errorClass);
+                    $(element).next('.invalid-feedback').remove();
+                },
+                submitHandler: function (form) {
+                    // Aquí puedes agregar la lógica para enviar el formulario utilizando AJAX
+                    alert('Formulario enviado exitosamente!');
+                    form.submit();
+                }
+            });
+        });
+    </script>
+}
